@@ -22,7 +22,7 @@ python setup.py
 ### 2️⃣ Run the Application
 
 ```sh
-python GST2B-downloader.py
+python GST2B-Downloader.py
 ```
 
 ### 3️⃣ Access the Web Interface
