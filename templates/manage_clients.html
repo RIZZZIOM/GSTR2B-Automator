@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Clients - U&M Consultants</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 30px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #343a40;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        hr {
+            border: 1px solid #dee2e6;
+            margin: 40px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .client-actions button {
+            margin-left: 5px;
+        }
+
+        #addClientBtn {
+            width: auto;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            z-index: 1000;
+        }
+
+        .form-popup .close-btn {
+            float: right;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            <i class="fas fa-user-edit"></i> Manage Clients
+            <button id="addClientBtn" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Client</button>
+        </h1>
+
+        <div id="viewClientDetailsSection">
+            <h3>View Client Details</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Client Name</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="clientDetailsTable">
+                    <!-- Client details will be dynamically populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        <div class="back-home-btn"></div>
+            <button onclick="window.location.href='/'" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </button>
+        </div>
+    </div>
+
+    <!-- Add Client Form Modal -->
+    <div id="addClientModal" class="form-popup">
+        <span class="close-btn" onclick="closeModal('addClientModal')">&times;</span>
+        <h3>Add New Client</h3>
+        <form id="addClientForm" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="newClientName">Client Name</label>
+                <input type="text" class="form-control" id="newClientName" placeholder="Enter client name">
+            </div>
+            <div class="form-group">
+                <label for="newClientUsername">Username</label>
+                <input type="text" class="form-control" id="newClientUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="newClientPassword">Password</label>
+                <input type="password" class="form-control" id="newClientPassword" placeholder="Enter password">
+                <input type="checkbox" id="toggleNewPassword"> Show Password
+            </div>
+            <hr>
+            <h3>Add Client From Excel Sheet</h3>
+            <div class="form-group">
+                <label for="xlsxFile">Upload XLSX File</label>
+                <input type="file" class="form-control" id="xlsxFile" accept=".xlsx">
+            </div>
+
+            <!-- Button to download sample Excel file -->
+            <a href="{{ url_for('download_sample') }}" class="btn btn-info">
+                <i class="fas fa-file-excel"></i> Download Sample Excel
+            </a>
+
+            <button type="button" class="btn btn-primary" id="submitAddClientBtn"><i class="fas fa-user-plus"></i> Add Client</button>
+        </form>
+    </div>
+
+
+
+    <!-- Edit Client Modal -->
+    <div id="editClientModal" class="form-popup">
+        <span class="close-btn" onclick="closeModal('editClientModal')">&times;</span>
+        <h3>Edit Client</h3>
+        <form id="editClientForm">
+            <div class="form-group">
+                <label for="editClientName">Client Name</label>
+                <input type="text" class="form-control" id="editClientName" placeholder="Enter new client name">
+            </div>
+            <div class="form-group">
+                <label for="editClientUsername">Username</label>
+                <input type="text" class="form-control" id="editClientUsername" placeholder="Enter new username">
+            </div>
+            <div class="form-group">
+                <label for="editClientPassword">Password</label>
+                <input type="password" class="form-control" id="editClientPassword" placeholder="Enter new password">
+                <input type="checkbox" id="toggleEditPassword"> Show Password
+            </div>
+            <button type="button" class="btn btn-warning" id="submitEditClientBtn"><i class="fas fa-edit"></i> Modify Client</button>
+        </form>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/manage_clients.js') }}"></script>
+</body>
+
+</html>

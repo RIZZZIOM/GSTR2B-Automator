@@ -1,0 +1,106 @@
+<!-- HTML for GSTR2B Downloader -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSTR2B Downloader</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <div class="container">
+        <h1><i class="fas fa-download"></i> GSTR2B Downloader</h1>
+        <form id="clientForm">
+            <label for="client">Choose a client:</label>
+            <select name="client" id="client" class="form-control">
+                {% for name in client_names %}
+                <option value="{{ name }}">{{ name }}</option>
+                {% endfor %}
+            </select>
+            <label for="fin_year">Financial Year:</label>
+            <select name="fin_year" id="fin_year" class="form-control">
+                <!-- Populated dynamically -->
+            </select>
+            <label for="quarter">Quarter:</label>
+            <select name="quarter" id="quarter" class="form-control">
+                <option value="Quarter 1 (Apr - Jun)">Quarter 1 (Apr - Jun)</option>
+                <option value="Quarter 2 (Jul - Sep)">Quarter 2 (Jul - Sep)</option>
+                <option value="Quarter 3 (Oct - Dec)">Quarter 3 (Oct - Dec)</option>
+                <option value="Quarter 4 (Jan - Mar)">Quarter 4 (Jan - Mar)</option>
+            </select>
+            <label for="period">Period:</label>
+            <select name="period" id="period" class="form-control">
+                <!-- Updated dynamically -->
+            </select>
+
+            <!-- Button to Modify Client -->
+            <button type="button" id="modifyClient" class="btn btn-warning mt-3" onclick="window.location.href='/manage_clients'">
+                <i class="fas fa-user-edit"></i> Manage Clients
+            </button>
+
+            <button type="button" id="submitClient" class="btn btn-success mt-3">
+                <i class="fas fa-download"></i> Download
+            </button>
+        </form>
+    </div>
+
+    <!-- The Modal for CAPTCHA -->
+    <div id="captchaModal" class="modal" tabindex="-1" role="dialog">
+        <div id="captchaModalContent" class="modal-content">
+            <span id="closeModal" class="close">&times;</span>
+            <h2>Enter CAPTCHA</h2>
+            <img id="captchaImage" src="" alt="CAPTCHA" class="captcha-img">
+            <form id="captchaForm">
+                <input type="hidden" name="client_name" id="client_name" value="">
+                <label for="captcha_input">Enter CAPTCHA:</label>
+                <input type="text" id="captcha_input" name="captcha_input" class="form-control" required>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane"></i> Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for missing password -->
+    <div id="passwordModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Enter Client Password</h2>
+            <form id="passwordForm">
+                <input type="hidden" id="clientNameForPassword" name="client_name">
+                <label for="clientPassword">Enter Password:</label>
+                <input type="password" id="clientPassword" class="form-control" required>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Password
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Custom Script -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+
+</html>
